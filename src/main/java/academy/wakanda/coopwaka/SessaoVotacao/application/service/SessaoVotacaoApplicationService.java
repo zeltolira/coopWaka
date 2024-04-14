@@ -3,6 +3,7 @@ package academy.wakanda.coopwaka.SessaoVotacao.application.service;
 import academy.wakanda.coopwaka.SessaoVotacao.application.api.*;
 import academy.wakanda.coopwaka.SessaoVotacao.domain.SessaoVotacao;
 import academy.wakanda.coopwaka.SessaoVotacao.domain.VotoPauta;
+import academy.wakanda.coopwaka.associado.application.service.AssociadoService;
 import academy.wakanda.coopwaka.pauta.application.service.PautaService;
 import academy.wakanda.coopwaka.pauta.domain.Pauta;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.UUID;
 public class SessaoVotacaoApplicationService implements SessaoVotacaoService {
     private final SessaoVotacaoRepository sessaoVotacaoRepository;
     private final PautaService pautaService;
-//    private final AssociadoService associadoService;
+    private final AssociadoService associadoService;
     @Override
     public SessaoAberturaResponse abreSessao(SessaoAberturaRequest sessaoAberturaRequest) {
         log.info("[start] SessaoVotacaoApplicationService - abreSessao");
@@ -31,7 +32,7 @@ public class SessaoVotacaoApplicationService implements SessaoVotacaoService {
     public VotoResponse recebeVoto(UUID idSessao, VotoRequest novoVoto) {
         log.info("[start] SessaoVotacaoApplicationService - recebeVoto");
         SessaoVotacao sessao = sessaoVotacaoRepository.buscaPorId(idSessao);
-        VotoPauta voto = sessao.recebeVoto(novoVoto);
+        VotoPauta voto = sessao.recebeVoto(novoVoto, associadoService);
         sessaoVotacaoRepository.salva(sessao);
         log.info("[finish] SessaoVotacaoApplicationService - recebeVoto");
         return new VotoResponse(voto);

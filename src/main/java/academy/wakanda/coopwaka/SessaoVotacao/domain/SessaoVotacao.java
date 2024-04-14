@@ -1,6 +1,7 @@
 package academy.wakanda.coopwaka.SessaoVotacao.domain;
 
 import academy.wakanda.coopwaka.SessaoVotacao.application.api.SessaoAberturaRequest;
+import academy.wakanda.coopwaka.pauta.domain.Pauta;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,9 +27,11 @@ public class SessaoVotacao {
     private LocalDateTime momentoAbertura;
     private LocalDateTime momentoEncerramento;
 
-    public SessaoVotacao(SessaoAberturaRequest sessaoAberturaRequest) {
-        this.idPauta = sessaoAberturaRequest.getIdPauta();
+    public SessaoVotacao(SessaoAberturaRequest sessaoAberturaRequest, Pauta pauta) {
+        this.idPauta = pauta.getId();
         this.tempoDuracao = sessaoAberturaRequest.getTempoDuracao().orElse(1);
         this.momentoAbertura = LocalDateTime.now();
+        this.momentoEncerramento = momentoAbertura.plusMinutes(this.tempoDuracao);
+        this.status = StatusSessaoVotacao.ABERTA;
     }
 }

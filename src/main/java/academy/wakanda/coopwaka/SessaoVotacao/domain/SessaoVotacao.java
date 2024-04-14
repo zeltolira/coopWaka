@@ -1,5 +1,6 @@
 package academy.wakanda.coopwaka.SessaoVotacao.domain;
 
+import academy.wakanda.coopwaka.SessaoVotacao.application.api.ResultadoSessaoResponse;
 import academy.wakanda.coopwaka.SessaoVotacao.application.api.SessaoAberturaRequest;
 import academy.wakanda.coopwaka.SessaoVotacao.application.api.VotoRequest;
 import academy.wakanda.coopwaka.pauta.domain.Pauta;
@@ -76,7 +77,32 @@ public class SessaoVotacao {
 
     private void validaAssociado(String cpfAssociado) {
         if (this.votos.containsKey(cpfAssociado)){
-            new RuntimeException("Associado Já Voutou nessa Sessao!");
+            throw new RuntimeException("Associado Já Voutou nessa Sessao!");
         }
+    }
+
+    public ResultadoSessaoResponse obtemResultado() {
+        atualizaStatus();
+        return new ResultadoSessaoResponse(this);
+    }
+
+    public Long getTotalVotos() {
+        return Long.valueOf(this.votos.size());
+    }
+
+    public Long getTotalSim() {
+
+        return calculaVotosPorOpcao(OpcaoVoto.SIM);
+    }
+
+    public Long getTotalNao() {
+
+        return calculaVotosPorOpcao(OpcaoVoto.NAO);
+    }
+
+    private Long calculaVotosPorOpcao(OpcaoVoto opcao) {
+        return votos.values().stream()
+                .filter(voto -> voto.opcaoIgual(opcao))
+                .count();
     }
 }

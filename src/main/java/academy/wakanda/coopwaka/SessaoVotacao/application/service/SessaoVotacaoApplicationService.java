@@ -1,9 +1,6 @@
 package academy.wakanda.coopwaka.SessaoVotacao.application.service;
 
-import academy.wakanda.coopwaka.SessaoVotacao.application.api.SessaoAberturaRequest;
-import academy.wakanda.coopwaka.SessaoVotacao.application.api.SessaoAberturaResponse;
-import academy.wakanda.coopwaka.SessaoVotacao.application.api.VotoRequest;
-import academy.wakanda.coopwaka.SessaoVotacao.application.api.VotoResponse;
+import academy.wakanda.coopwaka.SessaoVotacao.application.api.*;
 import academy.wakanda.coopwaka.SessaoVotacao.domain.SessaoVotacao;
 import academy.wakanda.coopwaka.SessaoVotacao.domain.VotoPauta;
 import academy.wakanda.coopwaka.pauta.application.service.PautaService;
@@ -38,5 +35,15 @@ public class SessaoVotacaoApplicationService implements SessaoVotacaoService {
         sessaoVotacaoRepository.salva(sessao);
         log.info("[finish] SessaoVotacaoApplicationService - recebeVoto");
         return new VotoResponse(voto);
+    }
+
+    @Override
+    public ResultadoSessaoResponse obtemResultado(UUID idSessao) {
+        log.info("[start] SessaoVotacaoApplicationService - obtemResultado");
+        SessaoVotacao sessao = sessaoVotacaoRepository.buscaPorId(idSessao);
+        ResultadoSessaoResponse resultado = sessao.obtemResultado();
+        sessaoVotacaoRepository.salva(sessao);
+        log.info("[finish] SessaoVotacaoApplicationService - obtemResultado");
+        return resultado;
     }
 }

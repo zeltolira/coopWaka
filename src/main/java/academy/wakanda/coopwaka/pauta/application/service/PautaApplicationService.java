@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class PautaApplicationService implements Pautaservice {
+public class PautaApplicationService implements PautaService {
     private final PautaRepository pautaRepository;
 
     @Override

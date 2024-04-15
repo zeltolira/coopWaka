@@ -1,12 +1,12 @@
 package academy.wakanda.coopwaka.SessaoVotacao.domain;
 
 import academy.wakanda.coopwaka.SessaoVotacao.application.api.VotoRequest;
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

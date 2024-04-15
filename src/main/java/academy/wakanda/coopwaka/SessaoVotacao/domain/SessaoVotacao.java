@@ -5,7 +5,6 @@ import academy.wakanda.coopwaka.SessaoVotacao.application.api.SessaoAberturaRequ
 import academy.wakanda.coopwaka.SessaoVotacao.application.api.VotoRequest;
 import academy.wakanda.coopwaka.associado.application.service.AssociadoService;
 import academy.wakanda.coopwaka.pauta.domain.Pauta;
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +12,11 @@ import lombok.ToString;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @ToString

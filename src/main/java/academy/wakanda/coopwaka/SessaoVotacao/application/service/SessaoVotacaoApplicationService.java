@@ -21,30 +21,30 @@ public class SessaoVotacaoApplicationService implements SessaoVotacaoService {
     private final AssociadoService associadoService;
     @Override
     public SessaoAberturaResponse abreSessao(SessaoAberturaRequest sessaoAberturaRequest) {
-        log.info("[start] SessaoVotacaoApplicationService - abreSessao");
+        log.debug("[start] SessaoVotacaoApplicationService - abreSessao");
         Pauta pauta = pautaService.getPautaPorId(sessaoAberturaRequest.getIdPauta());
         SessaoVotacao sessaoVotacao = sessaoVotacaoRepository.salva(new SessaoVotacao(sessaoAberturaRequest, pauta));
-        log.info("[finish] SessaoVotacaoApplicationService - abreSessao");
+        log.debug("[finish] SessaoVotacaoApplicationService - abreSessao");
         return new SessaoAberturaResponse(sessaoVotacao);
     }
 
     @Override
     public VotoResponse recebeVoto(UUID idSessao, VotoRequest novoVoto) {
-        log.info("[start] SessaoVotacaoApplicationService - recebeVoto");
+        log.debug("[start] SessaoVotacaoApplicationService - recebeVoto");
         SessaoVotacao sessao = sessaoVotacaoRepository.buscaPorId(idSessao);
         VotoPauta voto = sessao.recebeVoto(novoVoto, associadoService);
         sessaoVotacaoRepository.salva(sessao);
-        log.info("[finish] SessaoVotacaoApplicationService - recebeVoto");
+        log.debug("[finish] SessaoVotacaoApplicationService - recebeVoto");
         return new VotoResponse(voto);
     }
 
     @Override
     public ResultadoSessaoResponse obtemResultado(UUID idSessao) {
-        log.info("[start] SessaoVotacaoApplicationService - obtemResultado");
+        log.debug("[start] SessaoVotacaoApplicationService - obtemResultado");
         SessaoVotacao sessao = sessaoVotacaoRepository.buscaPorId(idSessao);
         ResultadoSessaoResponse resultado = sessao.obtemResultado();
         sessaoVotacaoRepository.salva(sessao);
-        log.info("[finish] SessaoVotacaoApplicationService - obtemResultado");
+        log.debug("[finish] SessaoVotacaoApplicationService - obtemResultado");
         return resultado;
     }
 }

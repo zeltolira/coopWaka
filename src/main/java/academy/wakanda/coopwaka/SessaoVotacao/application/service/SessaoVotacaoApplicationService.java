@@ -1,6 +1,7 @@
 package academy.wakanda.coopwaka.SessaoVotacao.application.service;
 
 import academy.wakanda.coopwaka.SessaoVotacao.application.api.*;
+import academy.wakanda.coopwaka.SessaoVotacao.domain.PublicadorResultadoSessao;
 import academy.wakanda.coopwaka.SessaoVotacao.domain.SessaoVotacao;
 import academy.wakanda.coopwaka.SessaoVotacao.domain.VotoPauta;
 import academy.wakanda.coopwaka.associado.application.service.AssociadoService;
@@ -19,6 +20,8 @@ public class SessaoVotacaoApplicationService implements SessaoVotacaoService {
     private final SessaoVotacaoRepository sessaoVotacaoRepository;
     private final PautaService pautaService;
     private final AssociadoService associadoService;
+    private final PublicadorResultadoSessao publicadorResultadoSessao;
+
     @Override
     public SessaoAberturaResponse abreSessao(SessaoAberturaRequest sessaoAberturaRequest) {
         log.debug("[start] SessaoVotacaoApplicationService - abreSessao");
@@ -32,7 +35,7 @@ public class SessaoVotacaoApplicationService implements SessaoVotacaoService {
     public VotoResponse recebeVoto(UUID idSessao, VotoRequest novoVoto) {
         log.debug("[start] SessaoVotacaoApplicationService - recebeVoto");
         SessaoVotacao sessao = sessaoVotacaoRepository.buscaPorId(idSessao);
-        VotoPauta voto = sessao.recebeVoto(novoVoto, associadoService);
+        VotoPauta voto = sessao.recebeVoto(novoVoto, associadoService, publicadorResultadoSessao);
         sessaoVotacaoRepository.salva(sessao);
         log.debug("[finish] SessaoVotacaoApplicationService - recebeVoto");
         return new VotoResponse(voto);
@@ -42,7 +45,7 @@ public class SessaoVotacaoApplicationService implements SessaoVotacaoService {
     public ResultadoSessaoResponse obtemResultado(UUID idSessao) {
         log.debug("[start] SessaoVotacaoApplicationService - obtemResultado");
         SessaoVotacao sessao = sessaoVotacaoRepository.buscaPorId(idSessao);
-        ResultadoSessaoResponse resultado = sessao.obtemResultado();
+        ResultadoSessaoResponse resultado = sessao.obtemResultado(publicadorResultadoSessao);
         sessaoVotacaoRepository.salva(sessao);
         log.debug("[finish] SessaoVotacaoApplicationService - obtemResultado");
         return resultado;

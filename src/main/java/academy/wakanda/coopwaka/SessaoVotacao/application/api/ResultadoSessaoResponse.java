@@ -2,14 +2,15 @@ package academy.wakanda.coopwaka.SessaoVotacao.application.api;
 
 import academy.wakanda.coopwaka.SessaoVotacao.domain.SessaoVotacao;
 import academy.wakanda.coopwaka.SessaoVotacao.domain.StatusSessaoVotacao;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
 @ToString
+@Builder(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class ResultadoSessaoResponse {
     private UUID idSessao;
     private UUID idPauta;

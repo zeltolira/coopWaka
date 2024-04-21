@@ -5,10 +5,7 @@ import academy.wakanda.coopwaka.SessaoVotacao.application.api.SessaoAberturaRequ
 import academy.wakanda.coopwaka.SessaoVotacao.application.api.VotoRequest;
 import academy.wakanda.coopwaka.associado.application.service.AssociadoService;
 import academy.wakanda.coopwaka.pauta.domain.Pauta;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -22,6 +19,8 @@ import java.util.UUID;
 @ToString
 @Entity
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(access = AccessLevel.PACKAGE)
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class SessaoVotacao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -66,7 +65,7 @@ public class SessaoVotacao {
         }
     }
 
-    private void atualizaStatus(PublicadorResultadoSessao publicadorResultadoSessao) {
+    void atualizaStatus(PublicadorResultadoSessao publicadorResultadoSessao) {
         if (this.status.equals(StatusSessaoVotacao.ABERTA)){
             if(LocalDateTime.now().isAfter(this.momentoEncerramento)){
                 fechaSessao(publicadorResultadoSessao);
@@ -74,16 +73,16 @@ public class SessaoVotacao {
         }
     }
 
-    private void fechaSessao(PublicadorResultadoSessao publicadorResultadoSessao) {
+    void fechaSessao(PublicadorResultadoSessao publicadorResultadoSessao) {
         this.status = StatusSessaoVotacao.FECHADA;
         publicadorResultadoSessao.publica(new ResultadoSessaoResponse(this));
     }
 
-    private void validaAssociado(String cpfAssociado, AssociadoService associadoService) {
+    void validaAssociado(String cpfAssociado, AssociadoService associadoService) {
         associadoService.validaAssociadoAptoVoto(cpfAssociado);
         validaVotoDuplicado(cpfAssociado);
     }
-    private void validaVotoDuplicado(String cpfAssosciado) {
+    void validaVotoDuplicado(String cpfAssosciado) {
         if (this.votos.containsKey(cpfAssosciado)) {
             throw new RuntimeException("Associado Já votou nessa Sessão!");
         }
